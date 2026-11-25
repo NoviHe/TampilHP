@@ -1,0 +1,15 @@
+# Dependencies & build outputs
+node_modules/
+dist/
+dist-portable/
+src-tauri/target/
+
+# Bundled scrcpy/adb binaries (fetched via scripts/fetch-scrcpy.ps1)
+src-tauri/resources/scrcpy/
+
+# Local runtime config & screenshots
+config.json
+screenshots/
+*.log
+.DS_Store
+Thumbs.db

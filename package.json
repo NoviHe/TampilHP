@@ -1,0 +1,22 @@
+{
+  "name": "tampilhp",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "tauri": "tauri",
+    "build:portable": "powershell -ExecutionPolicy Bypass -File scripts/build-portable.ps1"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^2.0.0",
+    "qrcode": "^1.5.4"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.0.0",
+    "@types/qrcode": "^1.5.5",
+    "typescript": "^5.6.0",
+    "vite": "^6.0.0"
+  }
+}

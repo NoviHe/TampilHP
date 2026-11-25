@@ -231,10 +231,24 @@ select {
   font-size: 13px;
 }
 
+.device-serial-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 2px;
+}
+
 .device-serial {
   font-size: 11px;
   color: var(--muted);
   font-family: Consolas, monospace;
+}
+
+.btn-xs {
+  padding: 1px 6px;
+  font-size: 10.5px;
+  border-radius: 5px;
+  line-height: 1.4;
 }
 
 .device-actions {

@@ -27,6 +27,7 @@ interface AppState {
   diagnostics: DiagnosticItem[];
   showDiagnostics: boolean;
   logs: string[];
+  revealedSerials: Set<string>;
   busyAction: string | null;
   toast: { text: string; isError: boolean } | null;
 }
@@ -62,6 +63,7 @@ const state: AppState = {
   diagnostics: [],
   showDiagnostics: false,
   logs: [],
+  revealedSerials: new Set<string>(),
   busyAction: null,
   toast: null,
 };
@@ -310,13 +312,18 @@ function renderDevicesSection() {
       const running = state.activeSerials.includes(d.serial);
       const isReady = d.state === "device";
       const badgeClass = isReady ? "ok" : d.state === "unauthorized" ? "err" : "warn";
+      const isRevealed = state.revealedSerials.has(d.serial);
+      const maskedSerial = d.serial.includes(":") ? "•••.•••.•••.•••:••••" : "••••••••••";
 
       return `
         <div class="device-card ${running ? "active" : ""}">
           <div class="device-top">
             <div>
               <div class="device-name">${escapeHtml(d.model)}</div>
-              <div class="device-serial">${escapeHtml(d.serial)}</div>
+              <div class="device-serial-row">
+                <span class="device-serial">${isRevealed ? escapeHtml(d.serial) : maskedSerial}</span>
+                <button class="btn btn-xs" data-action="toggle-serial" data-serial="${escapeHtml(d.serial)}" type="button">${isRevealed ? "Hide" : "Show"}</button>
+              </div>
             </div>
             <div class="row-inline">
               <span class="pill">${d.transport === "usb" ? "USB" : "Wi-Fi"}</span>
@@ -772,7 +779,14 @@ document.addEventListener("click", async (ev) => {
 
   const action = btn.dataset.action;
   const serial = btn.dataset.serial;
-  if (action === "mirror" && serial) {
+  if (action === "toggle-serial" && serial) {
+    if (state.revealedSerials.has(serial)) {
+      state.revealedSerials.delete(serial);
+    } else {
+      state.revealedSerials.add(serial);
+    }
+    renderDevicesSection();
+  } else if (action === "mirror" && serial) {
     await handleMirrorToggle(serial);
   } else if (action === "to-wifi" && serial) {
     await handleEnableWirelessUsb(serial);
